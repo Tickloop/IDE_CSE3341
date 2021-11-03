@@ -46,12 +46,36 @@ class IDE:
         self.start_btn.pack(side=tk.TOP, pady=15)
         self.quit_btn.pack(side=tk.TOP, pady=15)
 
+        # initialize with last test.code and test.data saved
+        self.initText()
+
         # and of course, run the loop
         self.root.mainloop()
+
+    def initText(self):
+        # check if file is present and readable
+        if os.path.isfile('./test.code'):
+            # display in code box
+            self.setTextFromFile(self.code_input_box, "test.code")
+        
+        if os.path.isfile('./test.data'):
+            # display in data box
+            self.setTextFromFile(self.user_input_box, "test.data")
+
     
     def getText(self, widget):
         return widget.get("1.0", "end")
     
+    def setTextFromFile(self, widget, file):
+        # open the file and read
+        with open(file, "r") as f:
+            # read all the lines at once
+            lines = f.read()
+            
+            # now set the text of the widget
+            widget.delete(1.0, "end")
+            widget.insert(1.0, lines)
+
     def showOutput(self, command, output):
         # first delete the current output,
         self.output_box.delete(1.0, "end")
